@@ -36,3 +36,14 @@ Finally, copy `task_dispatcher.py` client and your executor to each machine, set
 ```
 
 Expression `--` separates task dispatcher options and executor command. Option `-l` cause that dispatcher will be running until any task is available to solve. Without this option, dispatcher would solve only one task.
+
+To check progress of tasks solving, try the following commands:
+```sh
+php bin/console app:task:stats
+php bin/console app:user:stats
+```
+
+To export results, after tasks will be solved, use:
+```sh
+php bin/console app:task:export | tee results.jsonl
+```
