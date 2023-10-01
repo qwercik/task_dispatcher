@@ -6,6 +6,7 @@ import json
 def solve(task: dict) -> dict:
     print('Solving', task['question'], file=sys.stderr)
     return {
+        # eval is evil, but it's only an example :)
         'value': eval(task['question']),
     }
 
