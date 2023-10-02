@@ -1,7 +1,5 @@
 <?php
 
-xdebug_connect_to_client();
-
 use App\Kernel;
 
 require_once dirname(__DIR__).'/vendor/autoload_runtime.php';

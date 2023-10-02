@@ -1,8 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-xdebug_connect_to_client();
-
 use App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
