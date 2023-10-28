@@ -3,13 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\TaskRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task
@@ -23,11 +23,7 @@ class Task
 
     #[Groups(['task'])]
     #[ORM\Column]
-    protected array $input = [];
-
-    #[Groups(['task'])]
-    #[ORM\Column]
-    protected array $output = [];
+    protected array $data = [];
 
     #[Groups(['task'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
@@ -40,31 +36,27 @@ class Task
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     protected ?User $user = null;
 
+    #[ORM\OneToMany(mappedBy: 'task', targetEntity: Result::class)]
+    private Collection $results;
+
+    public function __construct()
+    {
+        $this->results = new ArrayCollection();
+    }
+
     public function getId(): string
     {
         return $this->id;
     }
 
-    public function getInput(): array
+    public function getData(): array
     {
-        return $this->input;
+        return $this->data;
     }
 
-    public function setInput(array $input): static
+    public function setData(array $data): static
     {
-        $this->input = $input;
-
-        return $this;
-    }
-
-    public function getOutput(): array
-    {
-        return $this->output;
-    }
-
-    public function setOutput(array $output): static
-    {
-        $this->output = $output;
+        $this->data = $data;
 
         return $this;
     }
@@ -103,5 +95,13 @@ class Task
         $this->user = $user;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Result>
+     */
+    public function getResults(): Collection
+    {
+        return $this->results;
     }
 }

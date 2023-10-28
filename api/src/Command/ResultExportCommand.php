@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\Result;
 use App\Entity\Task;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -24,9 +25,9 @@ class ResultExportCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $results = $this->entityManager->getRepository(Task::class)->findAllCompleted();
+        $results = $this->entityManager->getRepository(Result::class)->findAll();
         foreach ($results as $result) {
-            echo json_encode($result->getOutput()) . PHP_EOL;            
+            echo json_encode($result->getData()) . PHP_EOL;
         }
 
         return Command::SUCCESS;

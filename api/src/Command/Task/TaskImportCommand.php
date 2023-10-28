@@ -47,7 +47,7 @@ class TaskImportCommand extends Command
         );
         foreach ($jsons as $json) {
             $task = new Task();
-            $task->setInput($json);
+            $task->setData($json);
             $this->entityManager->persist($task);
         }
         $this->entityManager->flush();
