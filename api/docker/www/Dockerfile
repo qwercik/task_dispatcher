@@ -10,7 +10,7 @@ RUN chown www-data /var/www
 FROM common AS prod
 WORKDIR /var/www/html
 COPY . .
-RUN composer install
+RUN composer install --prefer-dist
 CMD php bin/console doctrine:migrations:migrate -n
 
 FROM common as dev
