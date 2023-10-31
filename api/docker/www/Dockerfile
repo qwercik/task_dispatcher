@@ -1,5 +1,5 @@
 FROM php:8.2-apache AS common
-RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends libpq-dev
+RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends libpq-dev git
 RUN docker-php-ext-install pdo_pgsql
 RUN curl -o /usr/local/bin/composer https://getcomposer.org/composer.phar && chmod +x /usr/local/bin/composer
 COPY ./docker/www/000-default.conf /etc/apache2/sites-available/
