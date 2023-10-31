@@ -19,7 +19,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./api
-          file: docker/www/Dockerfile
+          file: ./docker/www/Dockerfile
           target: prod
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/task_dispatcher:latest
