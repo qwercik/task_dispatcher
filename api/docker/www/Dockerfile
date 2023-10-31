@@ -9,7 +9,7 @@ RUN usermod -u 1000 www-data
 RUN chown www-data /var/www
 
 FROM common AS prod
-RUN apt-get install -yqq --no-install-recommends git
+RUN apt-get install -yqq --no-install-recommends git openssh-client
 
 FROM common as dev
 RUN pecl install xdebug && docker-php-ext-enable xdebug
