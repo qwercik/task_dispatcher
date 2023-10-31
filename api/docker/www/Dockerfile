@@ -9,9 +9,9 @@ RUN chown www-data /var/www
 
 FROM common AS prod
 WORKDIR /var/www/html
-COPY . .
+COPY . ./
 RUN composer install --prefer-dist
-CMD php bin/console doctrine:migrations:migrate -n
+# CMD bin/console doctrine:migrations:migrate -n
 
 FROM common as dev
 RUN curl -sS https://get.symfony.com/cli/installer | bash && mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
