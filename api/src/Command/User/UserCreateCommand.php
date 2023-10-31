@@ -39,7 +39,7 @@ class UserCreateCommand extends Command
         if (empty($name)) {
             $name = $io->askQuestion(new Question('User name'));
         }
-        
+
         try {
             $user = new User();
             $user->setName($name);

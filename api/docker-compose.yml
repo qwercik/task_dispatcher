@@ -2,7 +2,10 @@ version: "3.3"
 
 services:
   www:
-    build: docker/www/
+    build:
+      context: docker/www/
+      dockerfile: Dockerfile
+      target: dev
     ports:
       - "80:80"
     volumes:
@@ -14,11 +17,8 @@ services:
       - host.docker.internal:host-gateway
 
   database:
-    image: mysql:8.1
+    image: postgres:16.0
     ports:
-      - "3306:3306"
+      - "5432:5432"
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=database
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=password
+      - POSTGRES_PASSWORD=password

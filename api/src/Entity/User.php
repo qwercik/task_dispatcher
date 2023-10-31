@@ -11,6 +11,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: 'api_user')]
 class User implements UserInterface
 {
     #[ORM\Id]

@@ -57,7 +57,6 @@ class ReservationsController extends AbstractController
         ]);
     }
 
-
     #[Route('/reservations', name: 'reservations_new', methods: ['POST'], format: 'json')]
     public function makeReservation(): JsonResponse
     {
