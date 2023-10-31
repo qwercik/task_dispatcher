@@ -3,8 +3,7 @@ version: "3.3"
 services:
   www:
     build:
-      context: docker/www/
-      dockerfile: Dockerfile
+      dockerfile: docker/www/Dockerfile
       target: dev
     ports:
       - "80:80"
