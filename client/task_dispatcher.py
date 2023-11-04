@@ -50,12 +50,12 @@ class ApiConfig:
 @dataclass
 class Task:
     id: str
-    input: str
+    data: str
 
 @dataclass
 class Result:
     id: str
-    output: str
+    data: str
 
 class Api:
     def __init__(self, api_config: ApiConfig):
@@ -87,8 +87,12 @@ class Api:
         task = response.json()['task']
         return Task(
             id=task['id'],
-            input=task['input'],
+            data=task['data'],
         )
+
+    def send_result(self, task: Task, result: Result) -> None:
+        response = self.send_request('POST', f'/reservations/{task.id}', json=result.output)
+        self.verify_status_code(response, 201, 'Could not send a result')
     
     def finish_reservation(self, result: Result) -> None:
         response = self.send_request('DELETE', f'/reservations/{result.id}', json=result.output)
@@ -125,8 +129,23 @@ def solve_task(task: Task, process: subprocess.Popen) -> Result:
     )
 
 def single_task_cycle(api: Api, process: subprocess.Popen):
+
+    # POST /reservations -> { task }
+    # POST /reservations/{id}/results
+    # DELETE /reservations/{id}
+
+
     task = api.make_reservation()
     logger.info(f"Reserved task with id '{task.id}'")
+
+    process = subprocess.Popen(
+        subprocess_args,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+
+
     result = solve_task(task, process)
     api.finish_reservation(result)
 
@@ -141,17 +160,10 @@ def infinite_loop(fn):
 
 def main() -> None:
     dispatcher_args, subprocess_args = collect_cli_args()
-
     api_config = ApiConfig.from_env()
     api = Api(api_config)
-    process = subprocess.Popen(
-        subprocess_args,
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        text=True,
-    )
 
-    callable = lambda: single_task_cycle(api, process)
+    callable = lambda: single_task_cycle(api, subprocess_args)
     if dispatcher_args.loop:
         callable = infinite_loop(callable)
 
