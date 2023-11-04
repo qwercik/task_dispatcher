@@ -11,7 +11,6 @@ FROM common AS prod
 WORKDIR /var/www/html
 COPY . ./
 RUN composer install --prefer-dist && chown -R www-data:www-data . && chmod -R 755 .
-RUN service apache2 start
 CMD ["bash", "./docker/www/start.sh"]
 
 FROM common as dev
