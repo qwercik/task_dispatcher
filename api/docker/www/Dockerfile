@@ -11,7 +11,7 @@ FROM common AS prod
 WORKDIR /var/www/html
 COPY . ./
 RUN composer install --prefer-dist
-ENTRYPOINT ["bash", "./docker/www/start.sh"]
+CMD ["bash", "./docker/www/start.sh"]
 
 FROM common as dev
 RUN curl -sS https://get.symfony.com/cli/installer | bash && mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
