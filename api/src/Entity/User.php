@@ -29,6 +29,9 @@ class User implements UserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Task::class)]
     private Collection $tasks;
 
+    #[ORM\Column(options: ['default' => false ])]
+    protected bool $isAdmin = false;
+
     public function __construct()
     {
         $this->authToken = bin2hex(random_bytes(16));
@@ -64,9 +67,25 @@ class User implements UserInterface
         return $this->tasks;
     }
 
+    public function getIsAdmin(): bool
+    {
+        return $this->isAdmin;
+    }
+
+    public function setIsAdmin(bool $isAdmin): static
+    {
+        $this->isAdmin = $isAdmin;
+        return $this;
+    }
+
     public function getRoles(): array
     {
-        return [];
+        $roles = ['ROLE_USER'];
+        if ($this->isAdmin) {
+            $roles[] = 'ROLE_ADMIN';
+        }
+
+        return $roles;
     }
 
     public function eraseCredentials(): void

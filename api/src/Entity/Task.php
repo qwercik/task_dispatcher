@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task
 {
-    #[Groups(['task'])]
+    #[Groups(['task', 'reservation'])]
     #[ORM\Id]
     #[ORM\Column(type: "uuid", unique: true)]
     #[ORM\GeneratedValue(strategy: "CUSTOM")]
@@ -22,8 +22,12 @@ class Task
     protected UuidInterface|string $id;
 
     #[Groups(['task'])]
+    #[ORM\Column(unique: true)]
+    protected string $key = '';
+
+    #[Groups(['task', 'reservation'])]
     #[ORM\Column]
-    protected array $data = [];
+    protected array $params = [];
 
     #[Groups(['task'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
@@ -36,6 +40,7 @@ class Task
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     protected ?User $user = null;
 
+    #[Groups(['task'])]
     #[ORM\OneToMany(mappedBy: 'task', targetEntity: Result::class)]
     private Collection $results;
 
@@ -49,14 +54,26 @@ class Task
         return $this->id;
     }
 
-    public function getData(): array
+    public function getParams(): array
     {
-        return $this->data;
+        return $this->params;
     }
 
-    public function setData(array $data): static
+    public function setParams(array $params): static
     {
-        $this->data = $data;
+        $this->params = $params;
+
+        return $this;
+    }
+
+    public function getKey(): string
+    {
+        return $this->key;
+    }
+
+    public function setKey(string $key): static
+    {
+        $this->key = $key;
 
         return $this;
     }
