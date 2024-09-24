@@ -1,0 +1,9 @@
+.git
+var/
+vendor/
+Dockerfile
+.gitignore
+.dockerignore
+.env.local
+.env.prod
+compose.yml

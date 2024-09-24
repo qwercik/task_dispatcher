@@ -28,6 +28,7 @@ class UserCreateCommand extends Command
     {
         $this
             ->addOption('name', null, InputOption::VALUE_REQUIRED, 'User name')
+            ->addOption('admin', null, InputOption::VALUE_NEGATABLE, 'Is admin')
         ;
     }
 
@@ -40,9 +41,15 @@ class UserCreateCommand extends Command
             $name = $io->askQuestion(new Question('User name'));
         }
 
+        $isAdmin = $input->getOption('admin');
+        if (empty($isAdmin)) {
+            $isAdmin = $io->confirm('Is admin?', false);
+        }
+
         try {
             $user = new User();
             $user->setName($name);
+            $user->setIsAdmin($isAdmin);
             $this->entityManager->persist($user);
             $this->entityManager->flush();
 

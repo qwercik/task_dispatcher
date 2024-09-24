@@ -1,0 +1,23 @@
+services:
+  www:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "80:80"
+    volumes:
+      - ".:/var/www/html:rw"
+      - "./docker/www/vhost.conf:/etc/apache2/sites-enabled/000-default.conf:ro"
+      - "./docker/www/remoteip.conf:/etc/apache2/sites-enabled/remoteip.conf:ro"
+      - "./docker/www/dev/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:ro"
+    links:
+      - database
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  database:
+    image: postgres:16.0
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=password
